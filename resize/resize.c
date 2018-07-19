@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         bi.biWidth *= nth;
         bi.biHeight *= nth;
         int padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
-        bi.biSizeImage = ((3 * bi.biWidth) + padding) * height_in;
+        bi.biSizeImage = ((3 * bi.biWidth) + padding) * height_in;// What the fuck is this 3??! -- 3 refers to the size of the bytes
         bf.bfSize = bi.biSizeImage + sizeof(BITMAPFILEHEADER)+ sizeof(BITMAPINFOHEADER);
 
     //*******************************************************************
