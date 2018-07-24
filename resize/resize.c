@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         bi.biWidth *= nth;
         bi.biHeight *= nth;
         int padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
-        bi.biSizeImage = ((3 * bi.biWidth) + padding) * height_in;// What the fuck is this 3??! -- 3 refers to the size of the bytes
+        bi.biSizeImage = ((3 * bi.biWidth) + padding) * height_in;
         bf.bfSize = bi.biSizeImage + sizeof(BITMAPFILEHEADER)+ sizeof(BITMAPINFOHEADER);
 
     //*******************************************************************
@@ -108,9 +108,9 @@ int main(int argc, char *argv[])
                 for (int j = 0; j < nth; j++)
                 {
                     fwrite(arr, sizeof(arr), 1, outptr);
-                    for (int k = 0; k < padding_in; k++)
+                    for (int k = 0; k < sizeof(arr); k++) //iterate through arr not padding_in!!
                     {
-                        fputc(0x00, outptr);
+                        // fputc(0x00, outptr);
                     }
                 }
 
@@ -126,5 +126,6 @@ int main(int argc, char *argv[])
     fclose(outptr);
 
     // success
+    printf("Resize complete\n");
     return 0;
 }
