@@ -107,11 +107,11 @@ int main(int argc, char *argv[])
             }
                 for (int j = 0; j < nth; j++)
                 {
-                    fwrite(arr, sizeof(arr), 1, outptr);
-                    for (int k = 0; k < sizeof(arr); k++) //iterate through arr not padding_in!!
-                    {
-                         fputc(0x00, outptr);
-                    }
+                    // fwrite(arr, sizeof(arr), 1, outptr);
+                    // for (int k = 0; k < sizeof(arr); k++) //iterate through arr not padding_in!!
+                    // {
+                    //      fputc(0x00, outptr);
+                    // }
                 }
 
 
