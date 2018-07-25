@@ -84,13 +84,13 @@ int main(int argc, char *argv[])
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
     // iterate over infile's scanlines
-    for (int i = 0; i < width_in; i++)
+    for (int i = 0; i < height_in; i++)
     {
         //make an array to store the arr being written
         RGBTRIPLE arr[bi.biWidth];
 
             // iterate over pixels in scanline
-            for (int j = 0; j < height_in; j++)
+            for (int j = 0; j < width_in; j++)
             {
 
                 // temporary storage
@@ -115,11 +115,12 @@ int main(int argc, char *argv[])
                 }
             // skip over padding, if any
             fseek(inptr, padding_in, SEEK_CUR);
+
             // then add it back (to demonstrate how)
-            for (int k = 0; k < padding; k++)
-            {
-                fputc(0x00, outptr);
-            }
+        for (int k = 0; k < padding; k++)
+        {
+            fputc(0x00, outptr);
+        }
 }
 
     // close infile
