@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
                 // read RGB triple from infile
                 fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
 
-                // write RGB triple to outfile*****with resized pixels
+                //Add better comments here and
                 for(int x = 0; x < nth; x++)
                 {
                    arr[x + (nth * j)] = triple;
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
             }
                 for (int j = 0; j < nth; j++)
                 {
-                    // fwrite(arr, sizeof(arr), 1, outptr);
+                    fwrite(arr, sizeof(arr), 1, outptr);
                     // for (int k = 0; k < sizeof(arr); k++) //iterate through arr not padding_in!!
                     // {
                     //      fputc(0x00, outptr);
