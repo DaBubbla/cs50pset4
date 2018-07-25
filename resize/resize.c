@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         bi.biHeight *= nth;
         int padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
         bi.biSizeImage = ((3 * bi.biWidth) + padding) * height_in;
-        bf.bfSize = bi.biSizeImage + sizeof(BITMAPFILEHEADER)+ sizeof(BITMAPINFOHEADER);
+        bf.bfSize = bi.biSizeImage + 54;//sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
 
     //*******************************************************************
 
@@ -84,13 +84,13 @@ int main(int argc, char *argv[])
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
     // iterate over infile's scanlines
-    for (int i = 0; i < width_in; i++)
+    for (int i = 0; i < height_in; i++)
     {
         //make an array to store the arr being written
         RGBTRIPLE arr[bi.biWidth];
 
             // iterate over pixels in scanline
-            for (int j = 0; j < height_in; j++)
+            for (int j = 0; j < width_in; j++)
             {
 
                 // temporary storage
@@ -108,6 +108,10 @@ int main(int argc, char *argv[])
                 for (int j = 0; j < nth; j++)
                 {
                     fwrite(arr, sizeof(arr), 1, outptr);
+                    // for (int k = 0; k < sizeof(arr); k++) //iterate through arr not padding_in!!
+                    // {
+                    //      fputc(0x00, outptr);
+                    // }
                 }
 
 
