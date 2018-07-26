@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
         bi.biWidth *= nth;
         bi.biHeight *= nth;
         int padding = (4 - (bi.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
-        bi.biSizeImage = ((3 * bi.biWidth) + padding) * height_in;
+        bi.biSizeImage = ((3 * bi.biWidth) + padding) * abs(bi.biHeight);//instead of height_in?
         bf.bfSize = bi.biSizeImage + 54;//sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
 
     //*******************************************************************
@@ -84,13 +84,13 @@ int main(int argc, char *argv[])
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
     // iterate over infile's scanlines
-    for (int i = 0; i < width_in; i++)
+    for (int i = 0; i < height_in; i++)
     {
         //make an array to store the arr being written
         RGBTRIPLE arr[bi.biWidth];
 
             // iterate over pixels in scanline
-            for (int j = 0; j < height_in; j++)
+            for (int j = 0; j < width_in; j++)
             {
 
                 // temporary storage
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
                 // read RGB triple from infile
                 fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
 
-                //Take the current line of the array and store it in triple
+                //Writes the current pixel nth many times in the array
                 for(int x = 0; x < nth; x++)
                 {
                    arr[x + (nth * j)] = triple;
@@ -108,15 +108,23 @@ int main(int argc, char *argv[])
                 for (int y = 0; y < nth; y++)
                 {
                     fwrite(arr, sizeof(arr), 1, outptr);
+                    for (int z = 0; z < padding; z++)
+                    {
+                        fputc(0x00, outptr);
+                    }
                 }
+
             // skip over padding, if any
             fseek(inptr, padding_in, SEEK_CUR);
 
-            // then add it back (to demonstrate how)
-        for (int k = 0; k < padding; k++)
-        {
-            fputc(0x00, outptr);
-        }
+            // // then add it back (to demonstrate how)
+            // if(arr != bfSize)
+            // {
+            //     for (int k = 0; k < padding; k++)
+            //     {
+            //         fputc(0x00, outptr);
+            //     }
+            // }
 }
 
     // close infile
