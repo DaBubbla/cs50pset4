@@ -6,7 +6,6 @@ int main(int argc, char *argv[])
     //DECLARATIONS
     char *cardfile = argv[1]; //FILENAME
     int file_prefix = 000; //COUNTER FOR JPEG NAMES
-    //DECLARE EOF...
 
     //ENSURE PROPER USAGE - ONE ARGUMENT ONLY!
     if(argc != 2)
@@ -24,49 +23,51 @@ int main(int argc, char *argv[])
     }
 
     //DECLARE BUFFER TO AID IN JPEG IDENTIFICATION
-    unsigned char buffer[512]; //UNSIGNED CHAR is critical to this step
-
     int size = 512;
-    //fread cardfile and chop into 512 byte blocks
-    fread(buffer, size, 1, inptr);
-    //try oscar's while loop
+    unsigned char buffer[512];
 
-    //Check to see if block has JPEG header
+    //RESERVE MEMORY FOR IMAGES
+    FILE *image = NULL;
 
-    for (int x = 0; x < sizeof(cardfile); x++)
+    //SET CONDITION TO FALSE / 0 - CURRENTLY NO HEADER IS FOUND
+    int header_found = 0;
+
+    //VERIFY THERE IS A JPEG HEADER
+    while(fread(buffer, size, 1, inptr) == 1)// WHILE READING...
     {
-        if(//DOES THE CURRENT DATA HAVE JPEG HEADER?
+        if(//SEARCH FOR JPEG HEADER...
             buffer[0] == 0xff &&
             buffer[1] == 0xd8 &&
             buffer[2] == 0xff &&
             (buffer[3] & 0xf0) == 0xe0)
-            {   //IF HEADER IS FOUND - WRITE TO JPG FILE.
-                file_prefix++;
-                sprintf("recovered.jpg", "%u.jpg", file_prefix);
-                //FILE *img_file = fopen("recovered.jpg", "w");
-                //look up sprintf() documentation
+            {   //IF HEADER IS FOUND - FORGET PREVIOUS DATA.
+                if(header_found == 1)
+                {
+                    fclose(image);
+                }
+                else
+                {
+                    //ELSE SET HEADER TO TRUE
+                    //SO WE CAN WRITE
+                    header_found = 1;
+                }
+
             }
-        else//IF HEADER IS NOT FOUND...
+
+        if (header_found == 1)
         {
-            //continue through the cardfile...
+            //CREATE A VAR TO NAME + WRITE IMAGE
+            //INCREMENT FILEPREFIX FOR JPEG NAME
+            char filename [10];
+            sprintf(filename, "%03i.jpg", file_prefix);
+            image = fopen(filename, "w");
+            file_prefix++;
+            //AND WRITE IT TO IMAGE
+            fwrite(&buffer, size, 1, image);
         }
-
     }
-
-    //OPEN CARD FILE
-        //REPEAT UNTIL END OF CARD FILE
-            //READ 512 BYTES INTO A BUFFER
-
-            //START OF A NEW JPEG?
-                //YES?
-                //NO?
-            //ALREAD FOUND A JPEG?
-                //NO?
-                //YES?
-            //CLOSE REMAINING FILES
-
-    //Success!
-    return 0;
+    //SUCCESS - NOW CLOSE IT ALL UP
     fclose(inptr);
-    //fclose(output??);
+    fclose(image);
+    return 0;
 }
