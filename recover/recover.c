@@ -51,12 +51,7 @@ int main(int argc, char *argv[])
                     //SO WE CAN WRITE
                     header_found = 1;
                 }
-
-            }
-
-        if (header_found == 1)
-        {
-            //CREATE A VAR TO NAME + WRITE IMAGE
+                 //CREATE A VAR TO NAME + WRITE IMAGE
             //INCREMENT FILEPREFIX FOR JPEG NAME
             char filename [10];
             sprintf(filename, "%03i.jpg", file_prefix);
@@ -64,7 +59,8 @@ int main(int argc, char *argv[])
             file_prefix++;
             //AND WRITE IT TO IMAGE
             fwrite(&buffer, size, 1, image);
-        }
+            }
+
     }
     //SUCCESS - NOW CLOSE IT ALL UP
     fclose(inptr);
