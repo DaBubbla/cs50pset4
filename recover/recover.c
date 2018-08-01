@@ -57,10 +57,13 @@ int main(int argc, char *argv[])
             sprintf(filename, "%03i.jpg", file_prefix);
             image = fopen(filename, "w");
             file_prefix++;
-            //AND WRITE IT TO IMAGE
-            fwrite(&buffer, size, 1, image);
             }
 
+            if (header_found == 1)
+            {
+                //WRITE IT TO IMAGE FILE
+                fwrite(&buffer, size, 1, image);
+            }
     }
     //SUCCESS - NOW CLOSE IT ALL UP
     fclose(inptr);
