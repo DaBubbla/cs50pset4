@@ -15,8 +15,7 @@ int main(int argc, char *argv[])
     }
 
     //OPEN INPUT FILE
-    FILE *inptr = fopen(cardfile, "r");//TESTING: BASED ON RECOVER HINTS
-    if(inptr == NULL)
+    FILE *inptr = fopen(cardfile, "r");
     {
         fprintf(stderr, "Could not open %s.\n", cardfile);
         return 2;
